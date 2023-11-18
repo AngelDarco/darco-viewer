@@ -19,12 +19,11 @@ export default class IconsActions {
     console.log("extend");
   }
   show(e: React.MouseEvent<HTMLImageElement>) {
-    console.log("close");
-    this.setShowViewer(true);
+    this.setShowViewer(false);
     this.setImage({ src: e.currentTarget.src, alt: e.currentTarget.alt });
   }
   close() {
-    this.setShowViewer(false);
+    this.setShowViewer(true);
   }
   prevRigth() {
     console.log("prevRigth");

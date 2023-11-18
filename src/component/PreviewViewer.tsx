@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import { ViewerImageType, imgsType } from "../types/index.module";
 import IconsActions from "../utils/IconsActions";
-const PreviewViewer = (props: ViewerImageType) => {
-  const { img, children } = props;
+const PreviewViewer = ({ children }: ViewerImageType) => {
   const [showViewer, setShowViewer] = useState(true);
   const [image, setImage] = useState<imgsType | undefined>();
   const icons = new IconsActions({ setShowViewer, setImage });
   return (
     <>
-      {!showViewer ? (
+      {showViewer ? (
         React.Children.map(children, (child, index) => {
           if (React.isValidElement(child)) {
             return React.cloneElement(child, {
@@ -48,7 +47,7 @@ const PreviewViewer = (props: ViewerImageType) => {
           >
             {/* Gallery current image index and lenght */}
             <div>
-              <p>{image ? image?.alt : img.alt}</p>
+              <p>{image && image?.alt}</p>
             </div>
             {/* Header Icons */}
             <div
@@ -135,10 +134,7 @@ const PreviewViewer = (props: ViewerImageType) => {
        "
           >
             {/* Main Image in the Viewer */}
-            <img
-              src={image ? image?.src : img.src}
-              alt={image ? image?.alt : img.alt}
-            />
+            <img src={image && image?.src} alt={image && image?.alt} />
             {/* Viewer Control buttons */}
             <div
               className="

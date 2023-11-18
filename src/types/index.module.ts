@@ -1,6 +1,5 @@
 // Main props for PreviewViewer Component
 export type ViewerImageType = {
-  img: imgsType;
   children?: React.ReactNode | React.ReactNode[];
 };
 
