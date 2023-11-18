@@ -8,19 +8,39 @@ export default class IconsActions {
     this.setShowViewer = parameters.setShowViewer;
     this.setImage = parameters.setImage;
   }
-  zoomIn() {
-    console.log("zoomIn");
+  zoomIn(img: HTMLElement | string) {
+    if (img instanceof HTMLElement) img.style.objectFit = "fill";
+    else {
+      const image = document.getElementById(img);
+      if (image) image.style.objectFit = "fill";
+    }
   }
 
-  zoomOut() {
-    console.log("zoomOut");
+  zoomOut(img: HTMLElement | string) {
+    if (img instanceof HTMLElement) img.style.objectFit = "none";
+    else {
+      const image = document.getElementById(img);
+      if (image) image.style.objectFit = "none";
+    }
   }
-  extend() {
-    console.log("extend");
+  extend(e: string | undefined) {
+    if (!e) return;
+    const id = document.getElementById(e);
+    if (!id) return;
+    id?.requestFullscreen();
+    if (id && document.fullscreenEnabled)
+      id.addEventListener("fullscreenchange", () => {
+        if (document.fullscreenElement) this.zoomIn(id);
+        else this.zoomOut(id);
+      });
   }
   show(e: React.MouseEvent<HTMLImageElement>) {
     this.setShowViewer(false);
-    this.setImage({ src: e.currentTarget.src, alt: e.currentTarget.alt });
+    this.setImage({
+      src: e.currentTarget.src,
+      alt: e.currentTarget.alt,
+      id: e.currentTarget.id,
+    });
   }
   close() {
     this.setShowViewer(true);
