@@ -1,9 +1,4 @@
-import { imgsType } from "../types/index.module";
-
-type IconsActionsType = {
-  setShowViewer: React.Dispatch<React.SetStateAction<boolean>>;
-  setImage: React.Dispatch<React.SetStateAction<imgsType | undefined>>;
-};
+import { IconsActionsType } from "../types/index.module";
 
 export default class IconsActions {
   setShowViewer: IconsActionsType["setShowViewer"];
