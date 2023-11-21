@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+import { PrevImage } from "../types/index.module";
 import { IconsActionsType } from "../types/index.module";
 
 export default class IconsActions {
@@ -8,24 +10,24 @@ export default class IconsActions {
     this.setShowViewer = parameters.setShowViewer;
     this.setImage = parameters.setImage;
   }
-  zoomIn(img: HTMLElement | string) {
+  zoomIn(img: Element | string) {
     if (img instanceof HTMLElement) img.style.objectFit = "fill";
     else {
-      const image = document.getElementById(img);
-      if (image) image.style.objectFit = "fill";
+      const image = document.querySelector("[viewerid]");
+      if (image instanceof HTMLElement) image.style.objectFit = "fill";
     }
   }
 
-  zoomOut(img: HTMLElement | string) {
+  zoomOut(img: Element | string) {
     if (img instanceof HTMLElement) img.style.objectFit = "none";
     else {
-      const image = document.getElementById(img);
-      if (image) image.style.objectFit = "none";
+      const image = document.querySelector("[viewerid]");
+      if (image instanceof HTMLElement) image.style.objectFit = "none";
     }
   }
   extend(e: string | undefined) {
     if (!e) return;
-    const id = document.getElementById(e);
+    const id = document.querySelector(`[viewerid="${e}"]`);
     if (!id) return;
     id?.requestFullscreen();
     if (id && document.fullscreenEnabled)
@@ -39,16 +41,42 @@ export default class IconsActions {
     this.setImage({
       src: e.currentTarget.src,
       alt: e.currentTarget.alt,
-      id: e.currentTarget.id,
+      viewerid: e.currentTarget.getAttribute("viewerid") || "",
     });
   }
   close() {
     this.setShowViewer(true);
   }
-  prevRigth() {
-    console.log("prevRigth");
+  prevRigth(arr: ReactNode | null, img: string | undefined) {
+    if (!Array.isArray(arr) || arr.length < 1 || !img) return;
+    const next = arr.filter(({ props }: PrevImage) => {
+      const { viewerid } = props;
+      if (Number.parseInt(img) >= arr.length)
+        return Number.parseInt(viewerid) == 1;
+      return Number.parseInt(viewerid) === Number.parseInt(img) + 1;
+    });
+    const { src, alt, viewerid } = next[0].props;
+    this.setImage({
+      src,
+      alt,
+      viewerid,
+    });
   }
-  prevLeft() {
-    console.log("prevLeft");
+  prevLeft(arr: ReactNode | null, img: string | undefined) {
+    if (!Array.isArray(arr) || arr.length < 1 || !img) return;
+
+    const previous = arr.filter(({ props }: PrevImage) => {
+      const { viewerid } = props;
+      if (Number.parseInt(img) <= 1)
+        return Number.parseInt(viewerid) == arr.length;
+      return Number.parseInt(viewerid) === Number.parseInt(img) - 1;
+    });
+
+    const { src, alt, viewerid } = previous[0].props;
+    this.setImage({
+      src,
+      alt,
+      viewerid,
+    });
   }
 }

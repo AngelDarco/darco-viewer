@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ViewerImagesTypes, imgsType } from "../types/index.module";
 import IconsActions from "../utils/IconsActions";
+import ImageContainer from "./ImageContainer";
 const PreviewViewer = (props: ViewerImagesTypes) => {
   const { header, children } = props;
   const [showViewer, setShowViewer] = useState(true);
@@ -15,29 +16,37 @@ const PreviewViewer = (props: ViewerImagesTypes) => {
     else {
       setShowHeader(false);
       if (!image) return;
-      const img = document.getElementById(image.id);
+      const img = document.getElementById(image.viewerid);
       if (img) img.addEventListener("click", () => icons.close());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [header, image]);
+  }, [header, image, children]);
+
+  const [arrChilds, setArrChilds] = useState<React.ReactNode | undefined>();
+
+  useEffect(() => {
+    const handlerChilds = React.Children.map(children, (child, index) => {
+      if (React.isValidElement(child)) {
+        return React.cloneElement(child, {
+          onClick: (e) => icons.show(e),
+          viewerid: (index + 1).toString(),
+          key: index,
+        } as {
+          onClick: (
+            // eslint-disable-next-line prettier/prettier
+            e: React.MouseEvent<HTMLImageElement, MouseEvent>
+          ) => void;
+        });
+      }
+    });
+
+    setArrChilds(handlerChilds);
+  }, [children]);
 
   return (
     <>
       {showViewer ? (
-        React.Children.map(children, (child, index) => {
-          if (React.isValidElement(child)) {
-            return React.cloneElement(child, {
-              onClick: (e) => icons.show(e),
-              id: (index + 1).toString(),
-              key: index,
-            } as {
-              onClick: (
-                // eslint-disable-next-line prettier/prettier
-                e: React.MouseEvent<HTMLImageElement, MouseEvent>
-              ) => void;
-            });
-          }
-        })
+        arrChilds
       ) : (
         <div
           className="
@@ -67,7 +76,7 @@ const PreviewViewer = (props: ViewerImagesTypes) => {
               <div>
                 <p>
                   {" "}
-                  {image && image?.id} /{" "}
+                  {image && image?.viewerid} /{" "}
                   {Array.isArray(children) && children.length}
                 </p>
               </div>
@@ -82,7 +91,7 @@ const PreviewViewer = (props: ViewerImagesTypes) => {
         "
               >
                 {/* extend */}
-                <div onClick={() => icons.extend(image && image?.id)}>
+                <div onClick={() => icons.extend(image && image?.viewerid)}>
                   <svg
                     stroke="currentColor"
                     fill="currentColor"
@@ -96,7 +105,7 @@ const PreviewViewer = (props: ViewerImagesTypes) => {
                   </svg>
                 </div>
                 {/* zoom more */}
-                <div onClick={() => icons.zoomIn(image ? image?.id : "")}>
+                <div onClick={() => icons.zoomIn(image ? image?.viewerid : "")}>
                   <svg
                     stroke="currentColor"
                     fill="none"
@@ -114,7 +123,9 @@ const PreviewViewer = (props: ViewerImagesTypes) => {
                   </svg>
                 </div>
                 {/* zoom less */}
-                <div onClick={() => icons.zoomOut(image ? image?.id : "")}>
+                <div
+                  onClick={() => icons.zoomOut(image ? image?.viewerid : "")}
+                >
                   <svg
                     stroke="currentColor"
                     fill="none"
@@ -161,10 +172,10 @@ const PreviewViewer = (props: ViewerImagesTypes) => {
             `}
           >
             {/* Main Image in the Viewer */}
-            <img
-              src={image && image?.src}
-              alt={image && image?.alt}
-              id={image && image?.id}
+            <ImageContainer
+              src={image?.src}
+              viewerid={image?.viewerid}
+              alt={image?.alt}
             />
 
             {/* Viewer Control buttons */}
@@ -186,7 +197,12 @@ const PreviewViewer = (props: ViewerImagesTypes) => {
         [&>div]:text-white/25
         "
             >
-              <div id="prev-left" onClick={() => icons.prevLeft()}>
+              <div
+                id="prev-left"
+                onClick={() =>
+                  icons.prevLeft(arrChilds, image ? image.viewerid : undefined)
+                }
+              >
                 <svg
                   stroke="currentColor"
                   fill="currentColor"
@@ -198,7 +214,10 @@ const PreviewViewer = (props: ViewerImagesTypes) => {
                   <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm3.5 7.5a.5.5 0 0 1 0 1H5.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L5.707 7.5H11.5z"></path>
                 </svg>
               </div>
-              <div id="prev-rigth" onClick={() => icons.prevRigth()}>
+              <div
+                id="prev-rigth"
+                onClick={() => icons.prevRigth(arrChilds, image?.viewerid)}
+              >
                 <svg
                   stroke="currentColor"
                   fill="currentColor"
