@@ -5,11 +5,13 @@ import ImageContainer from "./ImageContainer";
 const PreviewViewer = (props: ViewerImagesTypes) => {
   const { header, children } = props;
   const [showViewer, setShowViewer] = useState(true);
+  const [zoom, setZoom] = useState(true);
   const [image, setImage] = useState<imgsType | undefined>();
 
   // Props states
   const [showHeader, setShowHeader] = useState(true);
-  const icons = new IconsActions({ setShowViewer, setImage });
+  const icons = new IconsActions({ setShowViewer, setImage, setZoom });
+
   useEffect(() => {
     // Show the entire header with Props
     if (header === undefined || header) setShowHeader(true);
@@ -50,7 +52,6 @@ const PreviewViewer = (props: ViewerImagesTypes) => {
       ) : (
         <div
           className="
-          border
           absolute 
           top-0
           left-0
@@ -64,8 +65,6 @@ const PreviewViewer = (props: ViewerImagesTypes) => {
               className="
         w-full
         h-[var(--header-height)]
-        border
-        border-green-500
        flex
        items-center
       justify-between
@@ -105,42 +104,48 @@ const PreviewViewer = (props: ViewerImagesTypes) => {
                   </svg>
                 </div>
                 {/* zoom more */}
-                <div onClick={() => icons.zoomIn(image ? image?.viewerid : "")}>
-                  <svg
-                    stroke="currentColor"
-                    fill="none"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    height="100%"
-                    width="100%"
+                {zoom ? (
+                  <div
+                    onClick={() => icons.zoomIn(image ? image?.viewerid : "")}
                   >
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    <line x1="11" y1="8" x2="11" y2="14"></line>
-                    <line x1="8" y1="11" x2="14" y2="11"></line>
-                  </svg>
-                </div>
-                {/* zoom less */}
-                <div
-                  onClick={() => icons.zoomOut(image ? image?.viewerid : "")}
-                >
-                  <svg
-                    stroke="currentColor"
-                    fill="none"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    height="100%"
-                    width="100%"
+                    <svg
+                      stroke="currentColor"
+                      fill="none"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      height="100%"
+                      width="100%"
+                    >
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      <line x1="11" y1="8" x2="11" y2="14"></line>
+                      <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                  </div>
+                ) : (
+                  /* zoom less */
+                  <div
+                    onClick={() => icons.zoomOut(image ? image?.viewerid : "")}
                   >
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    <line x1="8" y1="11" x2="14" y2="11"></line>
-                  </svg>
-                </div>
+                    <svg
+                      stroke="currentColor"
+                      fill="none"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      height="100%"
+                      width="100%"
+                    >
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                  </div>
+                )}
+
                 {/* close */}
                 <div onClick={() => icons.close()}>
                   <svg
@@ -194,7 +199,7 @@ const PreviewViewer = (props: ViewerImagesTypes) => {
         [&>div]:w-9
         [&>div]:h-9
         [&>div]:cursor-pointer
-        [&>div]:text-white/25
+        [&>div]:text-white/50
         "
             >
               <div
@@ -233,13 +238,12 @@ const PreviewViewer = (props: ViewerImagesTypes) => {
           </main>
           <footer
             className="
-      w-full
-      h-[var(--footer-height)]
-      flex
-      justify-center
-      items-center
-      border
-      "
+              w-full
+              h-[var(--footer-height)]
+              flex
+              justify-center
+              items-center
+                "
           >
             <p>{image && image?.alt}</p>
           </footer>

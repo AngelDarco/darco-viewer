@@ -1,3 +1,5 @@
+import React from "react";
+
 // Main props for PreviewViewer Component
 export type ViewerImagesTypes = {
   header?: boolean;
@@ -13,6 +15,7 @@ export type imgsType = {
 export type IconsActionsType = {
   setShowViewer: React.Dispatch<React.SetStateAction<boolean>>;
   setImage: React.Dispatch<React.SetStateAction<imgsType | undefined>>;
+  setZoom: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export interface CustomImageViewerProps

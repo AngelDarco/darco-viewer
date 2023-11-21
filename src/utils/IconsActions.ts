@@ -5,10 +5,12 @@ import { IconsActionsType } from "../types/index.module";
 export default class IconsActions {
   setShowViewer: IconsActionsType["setShowViewer"];
   setImage: IconsActionsType["setImage"];
+  setZoom: IconsActionsType["setZoom"];
 
   constructor(parameters: IconsActionsType) {
     this.setShowViewer = parameters.setShowViewer;
     this.setImage = parameters.setImage;
+    this.setZoom = parameters.setZoom;
   }
   zoomIn(img: Element | string) {
     if (img instanceof HTMLElement) img.style.objectFit = "fill";
@@ -16,6 +18,7 @@ export default class IconsActions {
       const image = document.querySelector("[viewerid]");
       if (image instanceof HTMLElement) image.style.objectFit = "fill";
     }
+    this.setZoom(false);
   }
 
   zoomOut(img: Element | string) {
@@ -24,6 +27,7 @@ export default class IconsActions {
       const image = document.querySelector("[viewerid]");
       if (image instanceof HTMLElement) image.style.objectFit = "none";
     }
+    this.setZoom(true);
   }
   extend(e: string | undefined) {
     if (!e) return;
@@ -61,6 +65,7 @@ export default class IconsActions {
       alt,
       viewerid,
     });
+    this.zoomOut(next[0]);
   }
   prevLeft(arr: ReactNode | null, img: string | undefined) {
     if (!Array.isArray(arr) || arr.length < 1 || !img) return;
@@ -78,5 +83,6 @@ export default class IconsActions {
       alt,
       viewerid,
     });
+    this.zoomOut(previous[0]);
   }
 }
