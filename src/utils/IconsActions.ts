@@ -13,19 +13,19 @@ export default class IconsActions {
     this.setZoom = parameters.setZoom;
   }
   zoomIn(img: Element | string) {
-    if (img instanceof HTMLElement) img.style.objectFit = "fill";
+    if (img instanceof HTMLElement) img.style.width = "1024";
     else {
       const image = document.querySelector("[viewerid]");
-      if (image instanceof HTMLElement) image.style.objectFit = "fill";
+      if (image instanceof HTMLElement) image.style.width = "1024px";
     }
     this.setZoom(false);
   }
 
   zoomOut(img: Element | string) {
-    if (img instanceof HTMLElement) img.style.objectFit = "none";
+    if (img instanceof HTMLElement) img.style.width = "700px";
     else {
       const image = document.querySelector("[viewerid]");
-      if (image instanceof HTMLElement) image.style.objectFit = "none";
+      if (image instanceof HTMLElement) image.style.width = "700px";
     }
     this.setZoom(true);
   }
@@ -48,8 +48,9 @@ export default class IconsActions {
       viewerid: e.currentTarget.getAttribute("viewerid") || "",
     });
   }
-  close() {
+  close(img: Element | string) {
     this.setShowViewer(true);
+    this.zoomOut(img);
   }
   prevRigth(arr: ReactNode | null, img: string | undefined) {
     if (!Array.isArray(arr) || arr.length < 1 || !img) return;
