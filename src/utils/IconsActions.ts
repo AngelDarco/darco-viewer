@@ -34,7 +34,7 @@ export default class IconsActions {
    * @return {void} This function does not return anything.
    */
   zoomOut(img: Element | string) {
-    if (img instanceof HTMLElement) img.style.width = "700px";
+    if (img instanceof HTMLElement) img.style.width = "600px";
     else {
       const image = document.querySelector("[viewerid]");
       if (image instanceof HTMLElement) image.style.width = "700px";
@@ -124,5 +124,17 @@ export default class IconsActions {
       });
       this.zoomOut(previous);
     }
+  }
+
+  getImageSize(src: string) {
+    console.log(src);
+    const image = new Image();
+    image.src = src;
+    const obj = { width: "", height: "" };
+    image.addEventListener("load", () => {
+      obj.width = image.naturalWidth + "";
+      obj.height = image.naturalHeight + "";
+    });
+    return obj;
   }
 }
