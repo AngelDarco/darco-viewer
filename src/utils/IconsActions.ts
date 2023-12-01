@@ -19,10 +19,16 @@ export default class IconsActions {
    * @return {void} This function does not return anything.
    */
   zoomIn(img: Element | string) {
-    if (img instanceof HTMLElement) img.style.width = "1024";
-    else {
+    if (img instanceof HTMLElement) {
+      img.style.width = "100%";
+      img.style.objectFit = "cover";
+    } else {
       const image = document.querySelector("[viewerid]");
-      if (image instanceof HTMLElement) image.style.width = "1024px";
+      if (image instanceof HTMLElement) {
+        image.style.width = "100%";
+
+        image.style.objectFit = "cover";
+      }
     }
     this.setZoom(false);
   }
@@ -34,10 +40,15 @@ export default class IconsActions {
    * @return {void} This function does not return anything.
    */
   zoomOut(img: Element | string) {
-    if (img instanceof HTMLElement) img.style.width = "600px";
-    else {
+    if (img instanceof HTMLElement) {
+      img.style.width = "auto";
+      img.style.objectFit = "cover";
+    } else {
       const image = document.querySelector("[viewerid]");
-      if (image instanceof HTMLElement) image.style.width = "700px";
+      if (image instanceof HTMLElement) {
+        image.style.width = "auto";
+        image.style.objectFit = "cover";
+      }
     }
     this.setZoom(true);
   }
@@ -53,8 +64,7 @@ export default class IconsActions {
     id?.requestFullscreen();
     if (id && document.fullscreenEnabled)
       id.addEventListener("fullscreenchange", () => {
-        if (document.fullscreenElement) this.zoomIn(id);
-        else this.zoomOut(id);
+        if (!document.fullscreenElement) this.zoomOut(id);
       });
   }
   /**
@@ -124,17 +134,5 @@ export default class IconsActions {
       });
       this.zoomOut(previous);
     }
-  }
-
-  getImageSize(src: string) {
-    console.log(src);
-    const image = new Image();
-    image.src = src;
-    const obj = { width: "", height: "" };
-    image.addEventListener("load", () => {
-      obj.width = image.naturalWidth + "";
-      obj.height = image.naturalHeight + "";
-    });
-    return obj;
   }
 }
