@@ -21,13 +21,10 @@ export default class IconsActions {
   zoomIn(img: Element | string) {
     if (img instanceof HTMLElement) {
       img.style.width = "100%";
-      img.style.objectFit = "cover";
     } else {
       const image = document.querySelector("[viewerid]");
       if (image instanceof HTMLElement) {
         image.style.width = "100%";
-
-        image.style.objectFit = "cover";
       }
     }
     this.setZoom(false);
@@ -42,12 +39,10 @@ export default class IconsActions {
   zoomOut(img: Element | string) {
     if (img instanceof HTMLElement) {
       img.style.width = "auto";
-      img.style.objectFit = "cover";
     } else {
       const image = document.querySelector("[viewerid]");
       if (image instanceof HTMLElement) {
         image.style.width = "auto";
-        image.style.objectFit = "cover";
       }
     }
     this.setZoom(true);
