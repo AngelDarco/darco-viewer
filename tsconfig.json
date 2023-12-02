@@ -14,12 +14,20 @@
     "noEmit": true,
     "jsx": "react-jsx",
 
+    "declaration": true,
+    "removeComments": true,
+    "emitDeclarationOnly": false,
+    "outDir": "dist",
+    "exactOptionalPropertyTypes": true,
+
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "typeRoots": ["./@types"],
+  "include": ["./src/**/**/*.ts", "./src/**/**/*.tsx"],
+  "exclude": ["node_modules"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
