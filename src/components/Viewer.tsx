@@ -3,6 +3,8 @@ import { ViewerImagesTypes, imgsType } from "../types";
 import IconsActions from "../utils/IconsActions";
 import ImageContainer from "./ImageContainer";
 import CloseViewer from "./CloseViewer";
+import styles from "../styles/Viewer.module.css";
+
 const Viewer = (props: ViewerImagesTypes) => {
   const { controls, children } = props;
   const [showViewer, setShowViewer] = useState(true);
@@ -30,12 +32,9 @@ const Viewer = (props: ViewerImagesTypes) => {
         return React.cloneElement(child, {
           onClick: (e) => icons.show(e),
           viewerid: (index + 1).toString(),
-          key: index,
+          key: index
         } as {
-          onClick: (
-            // eslint-disable-next-line prettier/prettier
-            e: React.MouseEvent<HTMLImageElement, MouseEvent>
-          ) => void;
+          onClick: (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => void;
         });
       }
     });
@@ -46,33 +45,16 @@ const Viewer = (props: ViewerImagesTypes) => {
 
   return (
     <>
-      {showViewer ? (
-        arrChilds
-      ) : (
-        <div
-          className="
-          absolute 
-          top-0
-          left-0
-          w-full
-          h-full
-          bg-black/70
-    "
-        >
+      {showViewer ? null : (
+        <div className={styles.ViewerContainer}>
           <header
-            className={`
-            w-full
-                h-[var(--header-height)]
-                flex
-                items-center
-                justify-between
-                px-9
-                ${!showControls && "absolute z-10 [&>div]:w-10 !justify-end"}
-            `}
+            className={`${styles.header}  ${
+              !showControls && styles.showHeaderControls
+            }`}
           >
             {showControls ? (
               /* Gallery current image index and lenght */
-              <>
+              <div className={styles.headerContent}>
                 <div>
                   <p>
                     {" "}
@@ -81,17 +63,12 @@ const Viewer = (props: ViewerImagesTypes) => {
                   </p>
                 </div>
                 {/* controls Icons */}
-                <div
-                  className="
-          flex
-          gap-4
-          [&>div]:w-6
-          [&>div]:h-6
-          [&>div]:cursor-pointer
-        "
-                >
+                <div className={styles.icons}>
                   {/* extend */}
-                  <div onClick={() => icons.extend(image && image?.viewerid)}>
+                  <div
+                    className={styles.svg}
+                    onClick={() => icons.extend(image && image?.viewerid)}
+                  >
                     <svg
                       stroke="currentColor"
                       fill="currentColor"
@@ -107,6 +84,7 @@ const Viewer = (props: ViewerImagesTypes) => {
                   {/* zoom more */}
                   {zoom ? (
                     <div
+                      className={styles.svg}
                       onClick={() => icons.zoomIn(image ? image?.viewerid : "")}
                     >
                       <svg
@@ -128,6 +106,7 @@ const Viewer = (props: ViewerImagesTypes) => {
                   ) : (
                     /* zoom less */
                     <div
+                      className={styles.svg}
                       onClick={() =>
                         icons.zoomOut(image ? image?.viewerid : "")
                       }
@@ -152,28 +131,22 @@ const Viewer = (props: ViewerImagesTypes) => {
                   {/* close */}
                   <CloseViewer controls close={() => icons.close("")} />
                 </div>
-              </>
+              </div>
             ) : (
-              <CloseViewer controls={false} close={() => icons.close("")} />
+              <CloseViewer
+                style={` ${styles.close}`}
+                controls={false}
+                close={() => icons.close("")}
+              />
             )}
           </header>
 
           <main
             className={`
-            w-full
-      ${
-        showControls
-          ? "h-[calc(100%-var(--header-height)-var(--footer-height))]"
-          : "h-full"
-      }
-        flex
-        items-center
-        justify-center
-       [&>img]:max-w-full
-       [&>img]:max-h-full
-       [&>img]:object-cover
-       relative
-            `}
+      ${styles.main} 
+       ${showControls && styles.showMainControls}
+      
+`}
           >
             {/* Main Image in the Viewer */}
             <ImageContainer
@@ -184,25 +157,9 @@ const Viewer = (props: ViewerImagesTypes) => {
 
             {/* Viewer Control buttons */}
             {showControls && (
-              <div
-                className="
-        absolute
-        top-2/4
-        left-0
-        w-full
-        px-9
-        flex
-        justify-between
-        items-center
-        z-50
-
-        [&>div]:w-9
-        [&>div]:h-9
-        [&>div]:cursor-pointer
-        [&>div]:text-white/50
-        "
-              >
+              <div className={styles.controls}>
                 <div
+                  className={styles.svg}
                   id="prev-left"
                   onClick={() =>
                     icons.prevLeft(
@@ -225,6 +182,7 @@ const Viewer = (props: ViewerImagesTypes) => {
                 </div>
                 <div
                   id="prev-rigth"
+                  className={styles.svg}
                   onClick={() => icons.prevRigth(arrChilds, image?.viewerid)}
                 >
                   <svg
@@ -242,20 +200,13 @@ const Viewer = (props: ViewerImagesTypes) => {
             )}
           </main>
           {showControls && (
-            <footer
-              className="
-              w-full
-              h-[var(--footer-height)]
-              flex
-              justify-center
-              items-center
-                "
-            >
+            <footer className={styles.footer}>
               <p>{image && image?.alt}</p>
             </footer>
           )}
         </div>
       )}
+      {arrChilds}
     </>
   );
 };

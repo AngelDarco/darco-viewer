@@ -1,14 +1,17 @@
+import styles from "../styles/Viewer.module.css";
 const CloseViewer = ({
+  style,
   controls,
-  close,
+  close
 }: {
+  style?: string;
   controls: boolean;
   close: () => void;
 }) => {
   return (
     <div
-      className={`
-    ${!controls ? "opacity-40" : "backdrop-opacity-100"}
+      className={` ${styles.svg}
+    ${!controls && style}
     `}
       onClick={() => close()}
     >
