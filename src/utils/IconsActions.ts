@@ -57,9 +57,13 @@ export default class IconsActions {
     const id = document.querySelector(`[viewerid="${e}"]`);
     if (!id) return;
     id?.requestFullscreen();
+    id.setAttribute("style", "object-fit: contain");
     if (id && document.fullscreenEnabled)
       id.addEventListener("fullscreenchange", () => {
-        if (!document.fullscreenElement) this.zoomOut(id);
+        if (!document.fullscreenElement) {
+          id.setAttribute("style", "object-fit: '' ");
+          this.zoomOut(id);
+        }
       });
   }
   /**
@@ -72,7 +76,7 @@ export default class IconsActions {
     this.setImage({
       src: e.currentTarget.src,
       alt: e.currentTarget.alt,
-      viewerid: e.currentTarget.getAttribute("viewerid") || "",
+      viewerid: e.currentTarget.getAttribute("viewerid") || ""
     });
   }
   /**
@@ -101,7 +105,7 @@ export default class IconsActions {
       this.setImage({
         src,
         alt,
-        viewerid,
+        viewerid
       });
       this.zoomOut(next);
     }
@@ -125,7 +129,7 @@ export default class IconsActions {
       this.setImage({
         src,
         alt,
-        viewerid,
+        viewerid
       });
       this.zoomOut(previous);
     }
