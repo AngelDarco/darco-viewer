@@ -1,0 +1,23 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.ImageContainer {
+  width: 100%;
+  height: auto;
+padding: 100px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  background-color: #000000;
+
+    
+      & .img {
+    width: 100px;
+    height: 100px;
+    border-radius: 100%;
+  }
+}
