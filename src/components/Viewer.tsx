@@ -4,6 +4,7 @@ import IconsActions from "../utils/IconsActions";
 import ImageContainer from "./ImageContainer";
 import CloseViewer from "./CloseViewer";
 import styles from "../styles/Viewer.module.css";
+import ChildrensValidation from "../utils/ChildrensValidation";
 
 const Viewer = (props: ViewerImagesTypes) => {
   const { controls, children } = props;
@@ -14,32 +15,23 @@ const Viewer = (props: ViewerImagesTypes) => {
   // Props states
   const [showControls, setShowControls] = useState(true);
 
+  // Icons Class Controls
   const icons = new IconsActions({ setShowViewer, setImage, setZoom });
 
+  // Show the controls with Props
   useEffect(() => {
-    // Show the controls with Props
-    if (controls === undefined || controls) setShowControls(true);
-    else {
-      setShowControls(false);
-    }
+    if (controls == undefined || controls) setShowControls(true);
+    else setShowControls(false);
   }, [controls, image, children]);
 
-  const [arrChilds, setArrChilds] = useState<React.ReactNode | undefined>();
+  const [arrayOfChilds, setArrayOfChilds] = useState<
+    React.ReactNode | undefined
+  >();
 
+  // Find childrens or grandchildrens and set it
   useEffect(() => {
-    const handlerChilds = React.Children.map(children, (child, index) => {
-      if (React.isValidElement(child)) {
-        return React.cloneElement(child, {
-          onClick: (e) => icons.show(e),
-          viewerid: (index + 1).toString(),
-          key: index
-        } as {
-          onClick: (e: React.MouseEvent<HTMLImageElement, MouseEvent>) => void;
-        });
-      }
-    });
-
-    setArrChilds(handlerChilds);
+    const handlerChilds = ChildrensValidation(children, icons);
+    setArrayOfChilds(handlerChilds);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [children]);
 
@@ -57,7 +49,6 @@ const Viewer = (props: ViewerImagesTypes) => {
               <div className={styles.headerContent}>
                 <div>
                   <p>
-                    {" "}
                     {image && image?.viewerid} /{" "}
                     {Array.isArray(children) && children.length}
                   </p>
@@ -163,7 +154,7 @@ const Viewer = (props: ViewerImagesTypes) => {
                   id="prev-left"
                   onClick={() =>
                     icons.prevLeft(
-                      arrChilds,
+                      arrayOfChilds,
                       // eslint-disable-next-line prettier/prettier
                       image ? image.viewerid : undefined
                     )
@@ -183,7 +174,9 @@ const Viewer = (props: ViewerImagesTypes) => {
                 <div
                   id="prev-rigth"
                   className={styles.svg}
-                  onClick={() => icons.prevRigth(arrChilds, image?.viewerid)}
+                  onClick={() =>
+                    icons.prevRigth(arrayOfChilds, image?.viewerid)
+                  }
                 >
                   <svg
                     stroke="currentColor"
@@ -206,7 +199,7 @@ const Viewer = (props: ViewerImagesTypes) => {
           )}
         </div>
       )}
-      {arrChilds}
+      {arrayOfChilds}
     </>
   );
 };
