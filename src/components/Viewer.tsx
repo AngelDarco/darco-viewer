@@ -77,7 +77,9 @@ const Viewer = (props: ViewerImagesTypes) => {
                   {/* zoom more */}
                   <div
                     className={stylesViewer.svg}
-                    onClick={() => icons.zoomIn(image ? image?.viewerid : "")}
+                    onClick={() =>
+                      icons.zoomIn(image && image, stylesViewer.main)
+                    }
                   >
                     <svg
                       stroke="currentColor"
@@ -98,7 +100,12 @@ const Viewer = (props: ViewerImagesTypes) => {
                   {/* zoom less */}
                   <div
                     className={stylesViewer.svg}
-                    onClick={() => icons.zoomOut(image ? image?.viewerid : "")}
+                    onClick={() =>
+                      icons.zoomOut(
+                        image ? image?.viewerid : "",
+                        stylesViewer.main
+                      )
+                    }
                   >
                     <svg
                       stroke="currentColor"

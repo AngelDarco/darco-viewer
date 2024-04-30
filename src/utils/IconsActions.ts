@@ -1,16 +1,18 @@
 import { ReactNode } from "react";
-import { PrevImage } from "../types";
+import { PrevImage, imgsType } from "../types";
 import { IconsActionsType } from "../types";
 
 export default class IconsActions {
   setShowViewer: IconsActionsType["setShowViewer"];
   setImage: IconsActionsType["setImage"];
-  private zoom: number;
+  private width: number;
+  private defaultZoom: number;
 
   constructor(parameters: IconsActionsType) {
     this.setShowViewer = parameters.setShowViewer;
     this.setImage = parameters.setImage;
-    this.zoom = 1;
+    this.width = 100;
+    this.defaultZoom = 100;
   }
   /**
    * Zooms in on the image.
@@ -18,14 +20,25 @@ export default class IconsActions {
    * @param {Element | string} img - The image element or image selector.
    * @return {void} This function does not return anything.
    */
-  zoomIn(img: Element | string) {
-    this.zoom += 0.3;
+  zoomIn(img: imgsType | undefined, container?: string) {
+    if (!img) return;
+    this.width += 10;
+
+    if (this.width >= this.defaultZoom) {
+      const imgContainer = document.querySelector("." + container);
+      if (imgContainer) imgContainer.removeAttribute("align-items");
+    }
+
     if (img instanceof HTMLElement) {
-      img.style.transform = `scale(${this.zoom})`;
+      img.style.width = `${this.width}%`;
+      img.style.height = `${this.width}%`;
+      img.style.objectFit = "contain";
     } else {
       const image = document.querySelector("[viewerid]");
       if (image instanceof HTMLElement) {
-        image.style.transform = `scale(${this.zoom})`;
+        image.style.width = `${this.width}%`;
+        image.style.height = `${this.width}%`;
+        image.style.objectFit = "contain";
       }
     }
   }
@@ -36,17 +49,26 @@ export default class IconsActions {
    * @param {Element | string} img - The image element or the viewer id.
    * @return {void} This function does not return anything.
    */
-  zoomOut(img: Element | string) {
-    if (this.zoom >= 0.3) this.zoom -= 0.3;
+  zoomOut(img: Element | string, container?: string) {
+    this.width -= 10;
+
+    if (this.width <= this.defaultZoom) {
+      const imgContainer = document.querySelector("." + container);
+      if (imgContainer)
+        imgContainer.setAttribute("style", "align-items: center");
+    }
     if (img instanceof HTMLElement) {
-      img.style.transform = `scale(${this.zoom})`;
+      img.style.width = `${this.width}%`;
+      img.style.height = `${this.width}%`;
     } else {
       const image = document.querySelector("[viewerid]");
       if (image instanceof HTMLElement) {
-        image.style.transform = `scale(${this.zoom})`;
+        image.style.width = `${this.width}%`;
+        image.style.height = `${this.width}%`;
       }
     }
   }
+
   /**
    * Extends the element to fullscreen if it exists.
    *
@@ -63,7 +85,7 @@ export default class IconsActions {
       id.addEventListener("fullscreenchange", () => {
         if (!document.fullscreenElement) {
           id.setAttribute("style", "object-fit: '' ");
-          this.zoom = 1.3;
+          this.width = this.defaultZoom;
           this.zoomOut(id);
         }
       });
@@ -88,7 +110,7 @@ export default class IconsActions {
    */
   close(img: Element | string) {
     this.setShowViewer(true);
-    this.zoom = 1.3;
+    this.width = this.defaultZoom;
     this.zoomOut(img);
   }
   /**
@@ -110,7 +132,7 @@ export default class IconsActions {
         alt,
         viewerid
       });
-      this.zoom = 1.3;
+      this.width = this.defaultZoom;
       this.zoomOut(next);
     }
   }
@@ -135,7 +157,7 @@ export default class IconsActions {
         alt,
         viewerid
       });
-      this.zoom = 1.3;
+      this.width = this.defaultZoom;
       this.zoomOut(previous);
     }
   }
