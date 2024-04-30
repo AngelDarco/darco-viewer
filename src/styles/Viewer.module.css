@@ -25,9 +25,13 @@
     left: 0;
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: #000000e9;
     color: #fff;
-    z-index: 1000;
+    z-index: 10000;
 
     /* Header section */
     & .header {
@@ -37,7 +41,10 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 9px;
-      position: relative;
+      position: absolute;
+      top: 0;
+      z-index: 50000;
+      background-color: #0000006e;
 
       & .headerContent {
         width: 100%;
@@ -73,6 +80,7 @@
       position: relative;
       width: 100%;
       height: 100%;
+      z-index: 10000;
 
       & img {
         all: unset;
@@ -109,6 +117,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      position: absolute;
+      bottom: 0;
+      background-color: #0000006e;
+      z-index: 50000;
     }
   }
 }
