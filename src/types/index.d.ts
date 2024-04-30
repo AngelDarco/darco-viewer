@@ -4,6 +4,8 @@ import React from "react";
 export type ViewerImagesTypes = {
   controls?: boolean;
   children?: React.ReactNode | React.ReactNode[];
+  styles?: React.CSSProperties;
+  className?: string;
 };
 
 export type imgsType = {
@@ -15,7 +17,6 @@ export type imgsType = {
 export type IconsActionsType = {
   setShowViewer: React.Dispatch<React.SetStateAction<boolean>>;
   setImage: React.Dispatch<React.SetStateAction<imgsType | undefined>>;
-  setZoom: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export interface CustomImageViewerProps

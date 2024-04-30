@@ -5,12 +5,12 @@ import { IconsActionsType } from "../types";
 export default class IconsActions {
   setShowViewer: IconsActionsType["setShowViewer"];
   setImage: IconsActionsType["setImage"];
-  setZoom: IconsActionsType["setZoom"];
+  private zoom: number;
 
   constructor(parameters: IconsActionsType) {
     this.setShowViewer = parameters.setShowViewer;
     this.setImage = parameters.setImage;
-    this.setZoom = parameters.setZoom;
+    this.zoom = 1;
   }
   /**
    * Zooms in on the image.
@@ -19,15 +19,15 @@ export default class IconsActions {
    * @return {void} This function does not return anything.
    */
   zoomIn(img: Element | string) {
+    this.zoom += 0.3;
     if (img instanceof HTMLElement) {
-      img.style.width = "100%";
+      img.style.transform = `scale(${this.zoom})`;
     } else {
       const image = document.querySelector("[viewerid]");
       if (image instanceof HTMLElement) {
-        image.style.width = "100%";
+        image.style.transform = `scale(${this.zoom})`;
       }
     }
-    this.setZoom(false);
   }
 
   /**
@@ -37,24 +37,25 @@ export default class IconsActions {
    * @return {void} This function does not return anything.
    */
   zoomOut(img: Element | string) {
+    if (this.zoom >= 0.3) this.zoom -= 0.3;
     if (img instanceof HTMLElement) {
-      img.style.width = "auto";
+      img.style.transform = `scale(${this.zoom})`;
     } else {
       const image = document.querySelector("[viewerid]");
       if (image instanceof HTMLElement) {
-        image.style.width = "auto";
+        image.style.transform = `scale(${this.zoom})`;
       }
     }
-    this.setZoom(true);
   }
   /**
    * Extends the element to fullscreen if it exists.
    *
    * @param {string | undefined} e - The image ID, to be extended.
    */
-  extend(e: string | undefined) {
-    if (!e) return;
-    const id = document.querySelector(`[viewerid="${e}"]`);
+  extend(viewerid: string | undefined) {
+    if (!viewerid) return;
+    const id = document.querySelector(`[viewerid="${viewerid}"]`);
+
     if (!id) return;
     id?.requestFullscreen();
     id.setAttribute("style", "object-fit: contain");
@@ -62,6 +63,7 @@ export default class IconsActions {
       id.addEventListener("fullscreenchange", () => {
         if (!document.fullscreenElement) {
           id.setAttribute("style", "object-fit: '' ");
+          this.zoom = 1.3;
           this.zoomOut(id);
         }
       });
@@ -86,6 +88,7 @@ export default class IconsActions {
    */
   close(img: Element | string) {
     this.setShowViewer(true);
+    this.zoom = 1.3;
     this.zoomOut(img);
   }
   /**
@@ -107,6 +110,7 @@ export default class IconsActions {
         alt,
         viewerid
       });
+      this.zoom = 1.3;
       this.zoomOut(next);
     }
   }
@@ -131,6 +135,7 @@ export default class IconsActions {
         alt,
         viewerid
       });
+      this.zoom = 1.3;
       this.zoomOut(previous);
     }
   }
