@@ -1,5 +1,5 @@
 import "./App.css";
-import Viewer from "../../src/components/Viewer";
+import Viewer from "darco-viewer";
 import img1 from "./assets/girl1.jpg";
 import img2 from "./assets/girl2.png";
 import img3 from "./assets/girl3.jpg";
