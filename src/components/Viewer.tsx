@@ -3,20 +3,19 @@ import { ViewerImagesTypes, imgsType } from "../types";
 import IconsActions from "../utils/IconsActions";
 import ImageContainer from "./ImageContainer";
 import CloseViewer from "./CloseViewer";
-import styles from "../styles/Viewer.module.css";
+import stylesViewer from "../styles/Viewer.module.css";
 import ChildrensValidation from "../utils/ChildrensValidation";
 
 const Viewer = (props: ViewerImagesTypes) => {
-  const { controls, children } = props;
+  const { controls, children, styles, className } = props;
   const [showViewer, setShowViewer] = useState(true);
-  const [zoom, setZoom] = useState(true);
   const [image, setImage] = useState<imgsType | undefined>();
 
   // Props states
   const [showControls, setShowControls] = useState(true);
 
   // Icons Class Controls
-  const icons = new IconsActions({ setShowViewer, setImage, setZoom });
+  const icons = new IconsActions({ setShowViewer, setImage });
 
   // Show the controls with Props
   useEffect(() => {
@@ -36,17 +35,20 @@ const Viewer = (props: ViewerImagesTypes) => {
   }, [children]);
 
   return (
-    <>
+    <div
+      className={`${stylesViewer.viewerContainer} ${className}`}
+      style={styles}
+    >
       {showViewer ? null : (
-        <div className={styles.ViewerContainer}>
+        <div className={stylesViewer.container}>
           <header
-            className={`${styles.header}  ${
-              !showControls && styles.showHeaderControls
+            className={`${stylesViewer.header}  ${
+              !showControls && stylesViewer.showHeaderControls
             }`}
           >
             {showControls ? (
               /* Gallery current image index and lenght */
-              <div className={styles.headerContent}>
+              <div className={stylesViewer.headerContent}>
                 <div>
                   <p>
                     {image && image?.viewerid} /{" "}
@@ -54,10 +56,10 @@ const Viewer = (props: ViewerImagesTypes) => {
                   </p>
                 </div>
                 {/* controls Icons */}
-                <div className={styles.icons}>
-                  {/* extend */}
+                <div className={stylesViewer.icons}>
+                  {/* extend view */}
                   <div
-                    className={styles.svg}
+                    className={stylesViewer.svg}
                     onClick={() => icons.extend(image && image?.viewerid)}
                   >
                     <svg
@@ -73,72 +75,67 @@ const Viewer = (props: ViewerImagesTypes) => {
                     </svg>
                   </div>
                   {/* zoom more */}
-                  {zoom ? (
-                    <div
-                      className={styles.svg}
-                      onClick={() => icons.zoomIn(image ? image?.viewerid : "")}
+                  <div
+                    className={stylesViewer.svg}
+                    onClick={() =>
+                      icons.zoomIn(image && image, stylesViewer.main)
+                    }
+                  >
+                    <svg
+                      stroke="currentColor"
+                      fill="none"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      height="100%"
+                      width="100%"
                     >
-                      <svg
-                        stroke="currentColor"
-                        fill="none"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        height="100%"
-                        width="100%"
-                      >
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        <line x1="11" y1="8" x2="11" y2="14"></line>
-                        <line x1="8" y1="11" x2="14" y2="11"></line>
-                      </svg>
-                    </div>
-                  ) : (
-                    /* zoom less */
-                    <div
-                      className={styles.svg}
-                      onClick={() =>
-                        icons.zoomOut(image ? image?.viewerid : "")
-                      }
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      <line x1="11" y1="8" x2="11" y2="14"></line>
+                      <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                  </div>
+                  {/* zoom less */}
+                  <div
+                    className={stylesViewer.svg}
+                    onClick={() =>
+                      icons.zoomOut(
+                        image ? image?.viewerid : "",
+                        stylesViewer.main
+                      )
+                    }
+                  >
+                    <svg
+                      stroke="currentColor"
+                      fill="none"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      height="100%"
+                      width="100%"
                     >
-                      <svg
-                        stroke="currentColor"
-                        fill="none"
-                        strokeWidth="2"
-                        viewBox="0 0 24 24"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        height="100%"
-                        width="100%"
-                      >
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        <line x1="8" y1="11" x2="14" y2="11"></line>
-                      </svg>
-                    </div>
-                  )}
-
+                      <circle cx="11" cy="11" r="8"></circle>
+                      <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                      <line x1="8" y1="11" x2="14" y2="11"></line>
+                    </svg>
+                  </div>
                   {/* close */}
-                  <CloseViewer controls close={() => icons.close("")} />
+                  <CloseViewer controls close={() => icons.close()} />
                 </div>
               </div>
             ) : (
               <CloseViewer
-                style={` ${styles.close}`}
+                style={` ${stylesViewer.close}`}
                 controls={false}
-                close={() => icons.close("")}
+                close={() => icons.close()}
               />
             )}
           </header>
 
-          <main
-            className={`
-      ${styles.main} 
-       ${showControls && styles.showMainControls}
-      
-`}
-          >
+          <main className={`${stylesViewer.main}`}>
             {/* Main Image in the Viewer */}
             <ImageContainer
               src={image && image?.src}
@@ -148,9 +145,9 @@ const Viewer = (props: ViewerImagesTypes) => {
 
             {/* Viewer Control buttons */}
             {showControls && (
-              <div className={styles.controls}>
+              <div className={stylesViewer.controls}>
                 <div
-                  className={styles.svg}
+                  className={stylesViewer.svg}
                   id="prev-left"
                   onClick={() =>
                     icons.prevLeft(
@@ -173,7 +170,7 @@ const Viewer = (props: ViewerImagesTypes) => {
                 </div>
                 <div
                   id="prev-rigth"
-                  className={styles.svg}
+                  className={stylesViewer.svg}
                   onClick={() =>
                     icons.prevRigth(arrayOfChilds, image?.viewerid)
                   }
@@ -193,14 +190,14 @@ const Viewer = (props: ViewerImagesTypes) => {
             )}
           </main>
           {showControls && (
-            <footer className={styles.footer}>
+            <footer className={stylesViewer.footer}>
               <p>{image && image?.alt}</p>
             </footer>
           )}
         </div>
       )}
       {arrayOfChilds}
-    </>
+    </div>
   );
 };
 export default Viewer;

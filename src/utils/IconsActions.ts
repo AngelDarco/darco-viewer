@@ -1,16 +1,18 @@
 import { ReactNode } from "react";
-import { PrevImage } from "../types";
+import { PrevImage, imgsType } from "../types";
 import { IconsActionsType } from "../types";
 
 export default class IconsActions {
   setShowViewer: IconsActionsType["setShowViewer"];
   setImage: IconsActionsType["setImage"];
-  setZoom: IconsActionsType["setZoom"];
+  private width: number;
+  private defaultZoom: number;
 
   constructor(parameters: IconsActionsType) {
     this.setShowViewer = parameters.setShowViewer;
     this.setImage = parameters.setImage;
-    this.setZoom = parameters.setZoom;
+    this.width = 100;
+    this.defaultZoom = 100;
   }
   /**
    * Zooms in on the image.
@@ -18,16 +20,27 @@ export default class IconsActions {
    * @param {Element | string} img - The image element or image selector.
    * @return {void} This function does not return anything.
    */
-  zoomIn(img: Element | string) {
+  zoomIn(img: imgsType | undefined, container?: string) {
+    if (!img) return;
+    this.width += 10;
+
+    if (this.width >= this.defaultZoom) {
+      const imgContainer = document.querySelector("." + container);
+      if (imgContainer) imgContainer.setAttribute("style", "align-items: ");
+    }
+
     if (img instanceof HTMLElement) {
-      img.style.width = "100%";
+      img.style.width = `${this.width}%`;
+      img.style.height = `${this.width}%`;
+      img.style.objectFit = "contain";
     } else {
       const image = document.querySelector("[viewerid]");
       if (image instanceof HTMLElement) {
-        image.style.width = "100%";
+        image.style.width = `${this.width}%`;
+        image.style.height = `${this.width}%`;
+        image.style.objectFit = "contain";
       }
     }
-    this.setZoom(false);
   }
 
   /**
@@ -36,25 +49,35 @@ export default class IconsActions {
    * @param {Element | string} img - The image element or the viewer id.
    * @return {void} This function does not return anything.
    */
-  zoomOut(img: Element | string) {
+  zoomOut(img: Element | string, container?: string) {
+    this.width -= 10;
+
+    if (this.width <= this.defaultZoom) {
+      const imgContainer = document.querySelector("." + container);
+      if (imgContainer)
+        imgContainer.setAttribute("style", "align-items: center");
+    }
     if (img instanceof HTMLElement) {
-      img.style.width = "auto";
+      img.style.width = `${this.width}%`;
+      img.style.height = `${this.width}%`;
     } else {
       const image = document.querySelector("[viewerid]");
       if (image instanceof HTMLElement) {
-        image.style.width = "auto";
+        image.style.width = `${this.width}%`;
+        image.style.height = `${this.width}%`;
       }
     }
-    this.setZoom(true);
   }
+
   /**
    * Extends the element to fullscreen if it exists.
    *
    * @param {string | undefined} e - The image ID, to be extended.
    */
-  extend(e: string | undefined) {
-    if (!e) return;
-    const id = document.querySelector(`[viewerid="${e}"]`);
+  extend(viewerid: string | undefined) {
+    if (!viewerid) return;
+    const id = document.querySelector(`[viewerid="${viewerid}"]`);
+
     if (!id) return;
     id?.requestFullscreen();
     id.setAttribute("style", "object-fit: contain");
@@ -62,6 +85,7 @@ export default class IconsActions {
       id.addEventListener("fullscreenchange", () => {
         if (!document.fullscreenElement) {
           id.setAttribute("style", "object-fit: '' ");
+          this.width = this.defaultZoom;
           this.zoomOut(id);
         }
       });
@@ -84,9 +108,9 @@ export default class IconsActions {
    *
    * @param {Element | string} img - The image element ID, to remove from the viewer.
    */
-  close(img: Element | string) {
+  close() {
     this.setShowViewer(true);
-    this.zoomOut(img);
+    this.width = this.defaultZoom;
   }
   /**
    * Filters and selects the previous right image from the given array.
@@ -107,6 +131,7 @@ export default class IconsActions {
         alt,
         viewerid
       });
+      this.width = this.defaultZoom;
       this.zoomOut(next);
     }
   }
@@ -131,6 +156,7 @@ export default class IconsActions {
         alt,
         viewerid
       });
+      this.width = this.defaultZoom;
       this.zoomOut(previous);
     }
   }
