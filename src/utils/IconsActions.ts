@@ -28,6 +28,7 @@ export default class IconsActions {
 
     if (this.width >= this.defaultZoom) {
       const imgContainer = document.getElementById(container as string);
+
       if (imgContainer)
         imgContainer.setAttribute("style", "align-items: unset");
     }
@@ -55,6 +56,7 @@ export default class IconsActions {
   zoomOut(img: Element | string, container?: string) {
     if (this.width <= 20) return;
     this.width -= this.zoom;
+
 
     if (this.width <= this.defaultZoom) {
       const imgContainer = document.getElementById(container as string);
