@@ -1,11 +1,11 @@
 {
   "name": "darco-viewer",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "type": "module",
   "module": "index.js",
   "main": "index.umd.cjs",
   "types": "/@types/index.d.ts",
-  "description": "image viewer for galleries or single images",
+  "description": "Image viewer for galleries or single images",
   "exports": {
     ".": {
       "import": "./index.js",
@@ -19,10 +19,10 @@
     "url": "git+https://github.com/AngelDarco/darco-viewer.git"
   },
   "peerDependencies": {
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "@types/react": "^18.2.15",
-    "@types/react-dom": "^18.2.7"
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "@types/react": "18.2.15",
+    "@types/react-dom": "18.2.7"
   },
   "compilerOptions": {
     "typeRoots": [
