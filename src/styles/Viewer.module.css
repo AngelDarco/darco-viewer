@@ -1,41 +1,53 @@
-:root {
-  --header-height: 50px;
-  --footer-height: 50px;
-}
+html {
+  body {
+    #viewerContainer {
+      all: unset;
+      --header-height: 50px;
+      --footer-height: 50px;
 
-.svg{
-    width: 1.5rem;
-    height: 1.5rem;
-    cursor: pointer;
-}
-.close{
-    opacity: 0.4;
-    .backdrop-opacity-100 {
-    --tw-backdrop-opacity: opacity(1);
-    backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
-}
-}
-.ViewerContainer{
-    position:fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #000000e9;
-    color: #fff;
-    z-index: 1000;
+      .svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        cursor: pointer;
+      }
 
-/* Header section */
-    & .header{
+      #close {
+        opacity: 0.4;
+      }
+      #container {
+        position: fixed;
+        top: 0;
+        left: 0;
         width: 100%;
-        height: var(--header-height);
+        height: 100%;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        padding: 0 9px;
-        position: relative;
-        
-        & .headerContent{
+        justify-content: center;
+        background-color: #000000e9;
+        color: #fff;
+        z-index: 10000;
+
+        #header,
+        #controls,
+        #footer {
+          width: 100%;
+          height: var(--header-height);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 1rem;
+          position: absolute;
+          z-index: 50000;
+          background-color: #0000006e;
+          transition: opacity 0.5s ease-in;
+        }
+
+        /* Header section */
+        #header {
+          top: 0;
+
+          #headerContent {
             width: 100%;
             height: 100%;
             display: flex;
@@ -43,70 +55,71 @@
             justify-content: space-between;
             padding: 0 2rem;
 
-            & .icons{
-                display: flex;
-                gap: 1rem;
+            #icons {
+              display: flex;
+              gap: 1rem;
             }
+          }
         }
+        /* Header without controls */
+        .headerHideControls {
+          justify-content: flex-end !important;
+          background-color: transparent !important;
+          padding: 0 2rem !important;
 
-    }
-
-    & .showHeaderControls{
-        position: absolute;
-        z-index: 1100;
-        justify-content: flex-end;
-        padding-right: 2rem;
-        & .svg{
+          .svg {
             width: 2.5rem;
             height: 2.5rem;
-        }
-    }
-
-    /* Main section */
-& .main{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    width: 100%;
-    height: 100%;
-
-    & img{
-        max-width: 100%;
-        max-height: 100%;
-        object-fit: cover;
-    }
-
-    & .controls{
-        width: 100%;
-        height: var(--header-height);
-        position: absolute;
-        top: 50%;
-        left: 0;
-        padding: 0 2.25rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 1100;
-        
-        & div{
-            color:  rgb(255 255 255 / 0.5);
+          }
         }
 
+        /* Main section */
+        #main {
+          all: unset;
+          display: flex;
+          justify-content: center;
+          position: relative;
+          width: 100%;
+          z-index: 10000;
+          overflow: scroll;
+
+          &::-webkit-scrollbar {
+            display: none;
+          }
+
+          img {
+            all: unset;
+            user-select: none;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: inline-block;
+          }
+
+          #controls {
+            position: fixed;
+            top: 50%;
+            padding: 0 2.25rem;
+            background-color: transparent;
+
+            div {
+              color: #ffffff80;
+            }
+          }
+        }
+        /* Main without controls */
+        .mainHideControls {
+          height: calc(
+            100% - var(--header-height) - var(--footer-height)
+          ) !important;
+        }
+
+        /* Footer section */
+        #footer {
+          bottom: 0;
+          justify-content: center;
+        }
+      }
     }
-}
-& .showMainControls{
-    height: calc(100% - var(--header-height) - var(--footer-height));
-}
-
-
-    /* Footer section */
-    & .footer{
-        width: 100%;
-        height: var(--footer-height);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
+  }
 }
