@@ -26,7 +26,8 @@ export default class IconsActions {
 
     if (this.width >= this.defaultZoom) {
       const imgContainer = document.querySelector("." + container);
-      if (imgContainer) imgContainer.setAttribute("style", "align-items: ");
+      if (imgContainer)
+        imgContainer.setAttribute("style", "align-items: unset");
     }
 
     if (img instanceof HTMLElement) {
@@ -50,6 +51,7 @@ export default class IconsActions {
    * @return {void} This function does not return anything.
    */
   zoomOut(img: Element | string, container?: string) {
+    if (this.width <= 20) return;
     this.width -= 10;
 
     if (this.width <= this.defaultZoom) {

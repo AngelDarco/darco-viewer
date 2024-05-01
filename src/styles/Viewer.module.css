@@ -1,4 +1,6 @@
 .viewerContainer {
+  all: unset;
+
   --header-height: 50px;
   --footer-height: 50px;
 
@@ -76,7 +78,6 @@
     & .main {
       display: flex;
       justify-content: center;
-      align-items: center;
       position: relative;
       width: 100%;
       z-index: 10000;
