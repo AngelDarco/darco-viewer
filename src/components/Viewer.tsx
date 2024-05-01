@@ -123,25 +123,19 @@ const Viewer = (props: ViewerImagesTypes) => {
                     </svg>
                   </div>
                   {/* close */}
-                  <CloseViewer controls close={() => icons.close("")} />
+                  <CloseViewer controls close={() => icons.close()} />
                 </div>
               </div>
             ) : (
               <CloseViewer
                 style={` ${stylesViewer.close}`}
                 controls={false}
-                close={() => icons.close("")}
+                close={() => icons.close()}
               />
             )}
           </header>
 
-          <main
-            className={`
-      ${stylesViewer.main} 
-       ${showControls && stylesViewer.showMainControls}
-      
-`}
-          >
+          <main className={`${stylesViewer.main}`}>
             {/* Main Image in the Viewer */}
             <ImageContainer
               src={image && image?.src}

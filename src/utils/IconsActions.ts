@@ -26,7 +26,7 @@ export default class IconsActions {
 
     if (this.width >= this.defaultZoom) {
       const imgContainer = document.querySelector("." + container);
-      if (imgContainer) imgContainer.removeAttribute("align-items");
+      if (imgContainer) imgContainer.setAttribute("style", "align-items: ");
     }
 
     if (img instanceof HTMLElement) {
@@ -108,10 +108,9 @@ export default class IconsActions {
    *
    * @param {Element | string} img - The image element ID, to remove from the viewer.
    */
-  close(img: Element | string) {
+  close() {
     this.setShowViewer(true);
     this.width = this.defaultZoom;
-    this.zoomOut(img);
   }
   /**
    * Filters and selects the previous right image from the given array.
