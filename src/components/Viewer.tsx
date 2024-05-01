@@ -44,7 +44,7 @@ const Viewer = (props: ViewerImagesTypes) => {
         <div id={stylesViewer.container}>
           <header
             id={stylesViewer.header}
-            className={`${!showControls && stylesViewer.showHeaderControls}`}
+            className={`${!showControls && stylesViewer.headerHideControls}`}
           >
             {showControls ? (
               /* Gallery current image index and lenght */
@@ -135,7 +135,10 @@ const Viewer = (props: ViewerImagesTypes) => {
             )}
           </header>
 
-          <main id={`${stylesViewer.main}`}>
+          <main
+            id={`${stylesViewer.main}`}
+            className={`${showControls ? stylesViewer.mainHideControls : ""}`}
+          >
             {/* Main Image in the Viewer */}
             <ImageContainer
               src={image && image?.src}
