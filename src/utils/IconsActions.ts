@@ -7,11 +7,13 @@ export default class IconsActions {
   setImage: IconsActionsType["setImage"];
   private width: number;
   private defaultZoom: number;
+  private zoom: number;
 
   constructor(parameters: IconsActionsType) {
     this.setShowViewer = parameters.setShowViewer;
     this.setImage = parameters.setImage;
     this.width = 100;
+    this.zoom = 10;
     this.defaultZoom = 100;
   }
   /**
@@ -22,10 +24,10 @@ export default class IconsActions {
    */
   zoomIn(img: imgsType | undefined, container?: string) {
     if (!img) return;
-    this.width += 10;
+    this.width += this.zoom;
 
     if (this.width >= this.defaultZoom) {
-      const imgContainer = document.querySelector("." + container);
+      const imgContainer = document.getElementById(container as string);
       if (imgContainer)
         imgContainer.setAttribute("style", "align-items: unset");
     }
@@ -52,10 +54,10 @@ export default class IconsActions {
    */
   zoomOut(img: Element | string, container?: string) {
     if (this.width <= 20) return;
-    this.width -= 10;
+    this.width -= this.zoom;
 
     if (this.width <= this.defaultZoom) {
-      const imgContainer = document.querySelector("." + container);
+      const imgContainer = document.getElementById(container as string);
       if (imgContainer)
         imgContainer.setAttribute("style", "align-items: center");
     }
@@ -87,7 +89,7 @@ export default class IconsActions {
       id.addEventListener("fullscreenchange", () => {
         if (!document.fullscreenElement) {
           id.setAttribute("style", "object-fit: '' ");
-          this.width = this.defaultZoom;
+          this.width = this.defaultZoom + this.zoom;
           this.zoomOut(id);
         }
       });
@@ -133,8 +135,8 @@ export default class IconsActions {
         alt,
         viewerid
       });
-      this.width = this.defaultZoom;
-      this.zoomOut(next);
+      this.width = this.defaultZoom + this.zoom;
+      this.zoomOut(src);
     }
   }
   /**
@@ -158,8 +160,8 @@ export default class IconsActions {
         alt,
         viewerid
       });
-      this.width = this.defaultZoom;
-      this.zoomOut(previous);
+      this.width = this.defaultZoom + this.zoom;
+      this.zoomOut(src);
     }
   }
 }
