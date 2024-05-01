@@ -10,14 +10,6 @@
 
   .close {
     opacity: 0.4;
-    .backdrop-opacity-100 {
-      --tw-backdrop-opacity: opacity(1);
-      backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness)
-        var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale)
-        var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert)
-        var(--tw-backdrop-opacity) var(--tw-backdrop-saturate)
-        var(--tw-backdrop-sepia);
-    }
   }
   .container {
     position: fixed;
@@ -33,18 +25,24 @@
     color: #fff;
     z-index: 10000;
 
-    /* Header section */
-    & .header {
+    .header,
+    .controls,
+    .footer {
       width: 100%;
       height: var(--header-height);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 9px;
+      padding: 0 1rem;
       position: absolute;
-      top: 0;
       z-index: 50000;
       background-color: #0000006e;
+      transition: opacity 0.5s ease-in;
+    }
+
+    /* Header section */
+    & .header {
+      top: 0;
 
       & .headerContent {
         width: 100%;
@@ -63,9 +61,11 @@
 
     & .showHeaderControls {
       position: absolute;
-      z-index: 1100;
+      z-index: 50000;
       justify-content: flex-end;
       padding-right: 2rem;
+      background-color: transparent;
+
       & .svg {
         width: 2.5rem;
         height: 2.5rem;
@@ -75,13 +75,13 @@
     /* Main section */
     & .main {
       display: flex;
-      /* align-items: center; */
       justify-content: center;
+      align-items: center;
       position: relative;
       width: 100%;
-      height: 100%;
       z-index: 10000;
       overflow: scroll;
+      height: calc(100% - var(--header-height) - var(--footer-height) - 1px);
 
       &::-webkit-scrollbar {
         display: none;
@@ -89,43 +89,29 @@
 
       & img {
         all: unset;
+        user-select: none;
         width: 100%;
         height: 100%;
         object-fit: contain;
+        display: inline-block;
       }
 
       & .controls {
-        width: 100%;
-        height: var(--header-height);
-        position: absolute;
+        position: fixed;
         top: 50%;
-        left: 0;
         padding: 0 2.25rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        z-index: 1100;
+        background-color: transparent;
 
         & div {
           color: #ffffff80;
         }
       }
     }
-    & .showMainControls {
-      height: calc(100% - var(--header-height) - var(--footer-height));
-    }
 
     /* Footer section */
     & .footer {
-      width: 100%;
-      height: var(--footer-height);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
       bottom: 0;
-      background-color: #0000006e;
-      z-index: 50000;
+      justify-content: center;
     }
   }
 }
