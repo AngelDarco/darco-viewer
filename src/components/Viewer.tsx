@@ -36,19 +36,19 @@ const Viewer = (props: ViewerImagesTypes) => {
 
   return (
     <div
-      className={`${stylesViewer.viewerContainer} ${className}`}
+      id={stylesViewer.viewerContainer}
+      className={`${className}`}
       style={styles}
     >
       {showViewer ? null : (
-        <div className={stylesViewer.container}>
+        <div id={stylesViewer.container}>
           <header
-            className={`${stylesViewer.header}  ${
-              !showControls && stylesViewer.showHeaderControls
-            }`}
+            id={stylesViewer.header}
+            className={`${!showControls && stylesViewer.showHeaderControls}`}
           >
             {showControls ? (
               /* Gallery current image index and lenght */
-              <div className={stylesViewer.headerContent}>
+              <div id={stylesViewer.headerContent}>
                 <div>
                   <p>
                     {image && image?.viewerid} /{" "}
@@ -56,7 +56,7 @@ const Viewer = (props: ViewerImagesTypes) => {
                   </p>
                 </div>
                 {/* controls Icons */}
-                <div className={stylesViewer.icons}>
+                <div id={stylesViewer.icons}>
                   {/* extend view */}
                   <div
                     className={stylesViewer.svg}
@@ -135,7 +135,7 @@ const Viewer = (props: ViewerImagesTypes) => {
             )}
           </header>
 
-          <main className={`${stylesViewer.main}`}>
+          <main id={`${stylesViewer.main}`}>
             {/* Main Image in the Viewer */}
             <ImageContainer
               src={image && image?.src}
@@ -145,7 +145,7 @@ const Viewer = (props: ViewerImagesTypes) => {
 
             {/* Viewer Control buttons */}
             {showControls && (
-              <div className={stylesViewer.controls}>
+              <div id={stylesViewer.controls}>
                 <div
                   className={stylesViewer.svg}
                   id="prev-left"
@@ -190,7 +190,7 @@ const Viewer = (props: ViewerImagesTypes) => {
             )}
           </main>
           {showControls && (
-            <footer className={stylesViewer.footer}>
+            <footer id={stylesViewer.footer}>
               <p>{image && image?.alt}</p>
             </footer>
           )}
