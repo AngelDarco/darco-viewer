@@ -6,15 +6,18 @@
   h1 {
     padding: 3rem 0;
   }
-}
 
-.App {
-  width: 100%;
-  gap: 1rem;
-  display: flex;
+  .App {
+    width: 100%;
+    gap: 1rem;
+    display: flex;
 
-  img {
-    width: 100px;
-    height: 100px;
+    img {
+      width: 100px;
+      height: 100px;
+    }
+    .view {
+      border: 1px solid red;
+    }
   }
 }
